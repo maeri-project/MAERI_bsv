@@ -1,0 +1,38 @@
+#!/bin/bash
+
+CONFIGS_DIR=./config
+  LAYER_DIR=$CONFIGS_DIR/layer
+  RNCFG_DIR=$CONFIGS_DIR/rn
+SCRIPTS_DIR=./scripts
+COMPILE_SCRIPT=$SCRIPTS_DIR/compile
+
+case "$1" in
+    -c) 
+        case "$2" in
+          all) $COMPILE_SCRIPT -c Testbench_MAERI INT16;;
+          tm) $COMPILE_SCRIPT -c Testbench_TileInfoMem INT16;;
+          cm) $COMPILE_SCRIPT -c Testbench_ConfigMem INT16;;
+          mn) $COMPILE_SCRIPT -c Testbench_MN INT16;;
+          dn) $COMPILE_SCRIPT -c Testbench_DN INT16;;
+          rn) $COMPILE_SCRIPT -c Testbench_RN INT16;;
+          gen) compile_Sim $3 $4;;
+        esac;;
+    -v)
+        case "$2" in
+          DN) $COMPILE_SCRIPT -v DN;;
+          MN) $COMPILE_SCRIPT -v MN;;
+          RN) $COMPILE_SCRIPT -v RN;;
+          ACC) $COMPILE_SCRIPT -v ACC;;
+	  ALL) python $SCRIPTS_DIR/gen_verilog.py
+        esac;;
+    -r) $COMPILE_SCRIPT -r;;
+    -rnCfg) 
+      case "$2" in
+        32) cp $RNCFG_DIR/32MS_VNSz9.vmh ./RN_Config.vmh;; 
+        64) cp $RNCFG_DIR/64MS_VNSz9.vmh ./RN_Config.vmh;; 
+        128) cp $RNCFG_DIR/64MS_VNSz9.vmh ./RN_Config.vmh;; 
+        256) cp $RNCFG_DIR/256MS_VNSz9.vmh ./RN_Config.vmh;; 
+      esac;;
+    -clean) $COMPILE_SCRIPT -clean;;
+    *) echo "[MAERI] You specified no operation";;    
+esac

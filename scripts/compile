@@ -1,0 +1,110 @@
+#!/bin/bash
+
+# Directory names
+LOG_DIR=./Log
+BUILD_DIR=./build
+SRC_DIR=./src
+
+LIB_DIR=$SRC_DIR/lib
+  TESTBENCH_DIR=$SRC_DIR/testbench
+
+  BASE_TYPE_DIR=$SRC_DIR/base_types
+
+  ALU_DIR=$SRC_DIR/ALUs
+  MN_DIR=$SRC_DIR/multiplier_network 
+  DN_DIR=$SRC_DIR/distribution_network
+    DN_SUBTREE_DIR=$DN_DIR/distribution_subtree
+  RN_DIR=$SRC_DIR/reduction_network
+    RN_DBRS_DIR=$RN_DIR/double_reduction_switch
+    RN_SGRS_DIR=$RN_DIR/single_reduction_switch
+
+  MAEARI_ACCELERATOR_DIR=$SRC_DIR/maeri_accelerator
+  MAEARI_CONTROLLOER_DIR=$SRC_DIR/maeri_controller
+
+STAT_UNIT_DIR=$SRC_DIR/statistics_units  
+# Include directory lists
+BASE_DIR=$LIB_DIR":"$BASE_TYPE_DIR":"$STAT_UNIT_DIR
+
+DN_INCLUDE_DIR=$BASE_DIR":"$DN_DIR":"$DN_SUBTREE_DIR":"
+MN_INCLUDE_DIR=$BASE_DIR":"$ALU_DIR":"$MN_DIR":"
+RN_INCLUDE_DIR=$BASE_DIR":"$ALU_DIR":"$RN_DIR":"$RN_DBRS_DIR":"$RN_SGRS_DIR":"
+
+MAERI_ACCELERATOR_INCLUDE_DIR=$BASE_DIR":"$DN_INCLUDE_DIR":"$MN_INCLUDE_DIR":"$RN_INCLUDE_DIR":"$MAEARI_ACCELERATOR_DIR":"$MAEARI_CONTROLLOER_DIR
+SIM_INCLUDE_DIR=$BASE_DIR":"$DN_INCLUDE_DIR":"$MN_INCLUDE_DIR":"$RN_INCLUDE_DIR":"$MAEARI_ACCELERATOR_DIR":"$TESTBENCH_DIR":"$MAEARI_CONTROLLOER_DIR":"$STAT_UNIT_DIR
+
+# File names
+
+DN_TOPFILE=$DN_DIR/DN_DistributionNetwork.bsv
+DN_TOPMODULE=mkDN_DistributionNetwork
+
+MN_TOPFILE=$MN_DIR/MN_MultiplierNetwork.bsv
+MN_TOPMODULE=mkMN_MultiplierNetwork
+
+RN_TOPFILE=$RN_DIR/RN_ReductionNetwork.bsv
+RN_TOPMODULE=mkRN_ReductionNetwork
+
+MAERI_ACCELERATOR_TOPFILE=$MAEARI_ACCELERATOR_DIR/MAERI_Accelerator.bsv
+MAERI_ACCELERATOR_TOPMODULE=mkMAERI_Accelerator
+
+CXXFLAGS="-Wall -Wno-unused -O0 -g -D_FILE_OFFSET_BITS=64 -j 16"
+
+DEBUG_FLAGS=' -D DEBUG_NULL
+'
+#  -D DEBUG_TESTBENCH
+#  -D DEBUG_DN
+#  -D DEBUG_DN_SUBTREE_CONTROLLER
+#  -D DEBUG_DN_SUBTREE
+#  -D DEBUG_MN_MS_NIC
+#  -D DEBUG_MN_MS_CONTROLLER
+#  -D DEBUG_RN
+#  -D DEBUG_RN_SGRS
+#  -D DEBUG_RN_DBRS
+#  -D DEBUG_RN_RS_CONTROLLER  
+
+
+
+function clean {
+	rm -rf $BUILD_DIR
+	rm -rf $LOG_DIR
+  rm -rf Verilog
+	rm -rf *.v
+	rm -rf ./build
+	rm -f ./sim.so
+  rm -f *.vcd
+	rm -f ./sim
+}	
+
+function run_test {
+	./$BUILD_DIR/sim
+}
+
+function compile_Sim {
+  mkdir -p $BUILD_DIR
+  bsc -u -sim +RTS -K1024M -RTS $DEBUG_FLAGS -D $2 -show-range-conflict -aggressive-conditions -no-warn-action-shadowing -parallel-sim-link 16 -warn-scheduler-effort -simdir $BUILD_DIR -info-dir $BUILD_DIR -bdir $BUILD_DIR -p +:$SIM_INCLUDE_DIR $TESTBENCH_DIR/$1.bsv  
+  bsc -u -sim -e mkTestbench +RTS -K1024M -RTS -bdir $BUILD_DIR -info-dir $BUILD_DIR -simdir $BUILD_DIR -warn-scheduler-effort -parallel-sim-link 16 -Xc++ -O0 -o sim 
+  mv sim $BUILD_DIR
+  mv sim.so $BUILD_DIR
+}
+
+function compile_Verilog {
+  mkdir -p $BUILD_DIR
+  mkdir -p Verilog
+  bsc -verilog -g $1 +RTS -K1024M -RTS -D $4 -steps-max-intervals 200000 -aggressive-conditions -no-warn-action-shadowing -simdir $BUILD_DIR -info-dir $BUILD_DIR -bdir $BUILD_DIR -p +:$2 -u $3
+  while read -d ':' p; do
+    mv $p/*.v ./Verilog 2>/dev/null
+  done <<< $2:
+}
+
+case "$1" in
+    -c) compile_Sim $2 $3;;
+    -v)
+        case "$2" in
+          DN) compile_Verilog $DN_TOPMODULE $DN_INCLUDE_DIR $DN_TOPFILE INT16;;
+          MN) compile_Verilog $MN_TOPMODULE $MN_INCLUDE_DIR $MN_TOPFILE INT16;;
+          RN) compile_Verilog $RN_TOPMODULE $RN_INCLUDE_DIR $RN_TOPFILE INT16;;
+          ACC) compile_Verilog $MAERI_ACCELERATOR_TOPMODULE $MAERI_ACCELERATOR_INCLUDE_DIR $MAERI_ACCELERATOR_TOPFILE INT16;;
+        esac;;
+    -r) run_test;;
+    -clean) clean;;
+    *) echo "[MAERI] You specified no operation";;    
+esac

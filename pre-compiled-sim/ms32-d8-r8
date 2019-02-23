@@ -1,0 +1,16 @@
+#!/bin/sh
+
+if (test "$BLUESPECDIR" = "")
+then
+  echo 'Error: $BLUESPECDIR environment variable is not set'
+  exit 1
+fi
+
+for arg in $@
+do
+  if (test "$arg" = "-h")
+  then
+    exec $BLUESPECDIR/tcllib/bluespec/bluesim.tcl $0.so mkTestbench --script_name `basename $0` -h
+  fi
+done
+exec $BLUESPECDIR/tcllib/bluespec/bluesim.tcl $0.so mkTestbench --script_name `basename $0` --creation_time 1550308783 "$@"
