@@ -1,6 +1,3 @@
-# Announcement about new repository
-We are migrating the repository to a new one (https://github.com/georgia-tech-synergy-lab/MAERI). The new reposiotry contains latest version of MAERI source code, which is used in a tutorial at HPCA 2019 (Feb 16, 2019).
-
 # MAERI
 MAERI: A DNN accelerator with reconfigurable interconnects to support flexible dataflow (http://synergy.ece.gatech.edu/tools/maeri/)
 
