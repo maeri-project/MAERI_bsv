@@ -19,5 +19,5 @@ You can edit number of multiplier switches (similar to the number of PEs in othe
 ## Notes
 This code base is work in progress Some of features such as compiler will be added to this repository. Please stay tuned for udpates.
 
-# mRNA: A Mapping Optmizer for MAERI
-https://github.com/georgia-tech-synergy-lab/mRNA
+## Related projects
+mRNA: A Mapping Optmizer for MAERI: https://github.com/georgia-tech-synergy-lab/mRNA
