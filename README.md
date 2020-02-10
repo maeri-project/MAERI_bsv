@@ -4,6 +4,8 @@ MAERI: A DNN accelerator with reconfigurable interconnects to support flexible d
 ## Software Requirement
 MAERI is written in Bluespec System Verilog (https://bluespec.com/). You need Bluespec Compiler software and license to use this repository. If your affiliation is universities, you can request a free license via Bluespec's university program (https://bluespec.com/university/)
 
+[Update] Bluespec released their compier as an opensource software. For details, please see the following article: https://bluespec.com/2020/01/06/bluespec-inc-to-open-source-its-proven-bsv-high-level-hdl-tools/
+
 ## How to change the design parameters?
 You can edit number of multiplier switches (similar to the number of PEs in other accelerators), distribution bandwidth, and reduction bandwidth. Please note that those parameters need to be integer numbers of power of two.
 
