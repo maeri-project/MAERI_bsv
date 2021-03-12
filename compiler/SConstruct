@@ -1,0 +1,19 @@
+
+env = Environment()
+
+includes = '''
+              .
+              lib/include
+              lib/include/machine_code_generator
+			  lib/include/reduction_network
+			  lib/include/isa
+			  lib/include/parser
+			  ./lib/src
+'''
+env.Append(LINKFLAGS=['-lboost_program_options'])
+env.Append(CXXFLAGS=['-std=c++17', '-lboost_program_options' ])
+env.Append(LIBS=['-lboost_program_options'])
+
+env.Append(CPPPATH = Split(includes))
+#env.Program("maestro-top.cpp")
+env.Program('maeri_compiler', ['./lib/src/maeri_compiler.cpp'])
