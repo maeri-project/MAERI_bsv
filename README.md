@@ -6,6 +6,8 @@ MAERI is written in Bluespec System Verilog (https://bluespec.com/). You need Bl
 
 [Update] Bluespec released their compier as an opensource software. For details, please see the following article: https://bluespec.com/2020/01/06/bluespec-inc-to-open-source-its-proven-bsv-high-level-hdl-tools/
 
+[Update] Please check this repo out to get the open-sourced Bluespec Compiler (https://github.com/B-Lang-org/bsc)
+
 ## How to change the design parameters?
 You can edit number of multiplier switches (similar to the number of PEs in other accelerators), distribution bandwidth, and reduction bandwidth. Please note that those parameters need to be integer numbers of power of two.
 
