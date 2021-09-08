@@ -1,5 +1,5 @@
 # MAERI
-MAERI: A DNN accelerator with reconfigurable interconnects to support flexible dataflow (http://synergy.ece.gatech.edu/tools/maeri/)
+MAERI: A DNN accelerator with reconfigurable interconnects to support flexible dataflow. This codebase was used in the MAERI HPCA 2019 tutorial.
 
 ## Software Requirement
 MAERI is written in Bluespec System Verilog (https://bluespec.com/). You need Bluespec Compiler software and license to use this repository. If your affiliation is universities, you can request a free license via Bluespec's university program (https://bluespec.com/university/)
@@ -24,4 +24,4 @@ You can edit number of multiplier switches (similar to the number of PEs in othe
 This code base is work in progress Some of features such as compiler will be added to this repository. Please stay tuned for udpates.
 
 ## Related projects
-mRNA: A Mapping Optmizer for MAERI: https://github.com/georgia-tech-synergy-lab/mRNA
+mRNA: A Mapping Optmizer for MAERI: https://github.com/maeri-project/mRNA
