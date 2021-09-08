@@ -35,5 +35,5 @@ This code base is work in progress Some of features such as compiler will be add
 mRNA: A Mapping Optmizer for MAERI: https://github.com/maeri-project/mRNA
 
 ## Contributors
-Lead Developer: [Hyoukjun Kwon](https://hyoukjunkwon.com/)
-Additional Contributors: Jianming Tong
+* Lead Developer: [Hyoukjun Kwon](https://hyoukjunkwon.com/)
+* Additional Contributors: Jianming Tong
