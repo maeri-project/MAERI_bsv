@@ -36,3 +36,4 @@ mRNA: A Mapping Optmizer for MAERI: https://github.com/maeri-project/mRNA
 
 ## Contributors
 Lead Developer: [Hyoukjun Kwon](https://hyoukjunkwon.com/)
+Additional Contributors: Jianming Tong
