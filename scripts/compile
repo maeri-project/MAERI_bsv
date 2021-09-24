@@ -80,7 +80,7 @@ function run_test {
 
 function compile_Sim {
   mkdir -p $BUILD_DIR
-  bsc -u -sim +RTS -K1024M -RTS $DEBUG_FLAGS -D $2 -show-range-conflict -aggressive-conditions -no-warn-action-shadowing -parallel-sim-link 16  -simdir $BUILD_DIR -info-dir $BUILD_DIR -bdir $BUILD_DIR -p +:$SIM_INCLUDE_DIR $TESTBENCH_DIR/$1.bsv  
+  bsc -u -sim +RTS -K1024M -RTS $DEBUG_FLAGS -D $2 -show-range-conflict -aggressive-conditions -no-warn-action-shadowing -parallel-sim-link 16 -steps-max-intervals 10000000 -simdir $BUILD_DIR -info-dir $BUILD_DIR -bdir $BUILD_DIR -p +:$SIM_INCLUDE_DIR $TESTBENCH_DIR/$1.bsv  
   bsc -u -sim -e mkTestbench +RTS -K1024M -RTS -bdir $BUILD_DIR -info-dir $BUILD_DIR -simdir $BUILD_DIR  -parallel-sim-link 16 -Xc++ -O0 -o sim 
   mv sim $BUILD_DIR
   mv sim.so $BUILD_DIR
